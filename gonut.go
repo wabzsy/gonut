@@ -175,7 +175,6 @@ func (o *Gonut) ReadFileInfo() error {
 func (o *Gonut) BuildModule() (err error) {
 
 	// Compress the input file?
-
 	if o.Config.Compress != DONUT_COMPRESS_NONE {
 		o.DPRINT("Compressing...")
 		switch o.Config.Compress {
@@ -249,6 +248,7 @@ func (o *Gonut) BuildModule() (err error) {
 			o.DPRINT("Method: %s", o.Config.Method)
 			copy(o.Module.Method[:DONUT_MAX_NAME-1], o.Config.Method)
 		}
+
 		// If no runtime specified in configuration, use version from assembly
 		if o.Config.Runtime == "" {
 			o.Config.Runtime = o.FileInfo.Ver
@@ -280,10 +280,11 @@ func (o *Gonut) BuildModule() (err error) {
 			// Add space
 			//o.Module.Args[4] = ' '
 		}
-		//
+
 		// Copy parameters
 		//copy(o.Module.Args[:DONUT_MAX_NAME-6], o.Config.Args)
 		copy(o.Module.Args[:DONUT_MAX_NAME], o.Config.Args)
+		o.DPRINT("Module Args: %s", o.Config.Args)
 	}
 
 	o.DPRINT("Copying data to module")
@@ -291,7 +292,6 @@ func (o *Gonut) BuildModule() (err error) {
 	o.ModuleData = o.Module.ToBytes()
 
 	o.DPRINT("Leaving without error")
-
 	return nil
 }
 
@@ -332,7 +332,6 @@ func (o *Gonut) BuildInstance() error {
 	// encryption enabled?
 	if o.Config.Entropy == DONUT_ENTROPY_DEFAULT {
 		o.DPRINT("Generating random key for instance")
-
 		// copy local key to configuration
 		if err := BytesToStruct(GenRandomBytes(int(unsafe.Sizeof(Crypt{}))), &o.Instance.Key); err != nil {
 			o.DPRINT("Generating random key for instance failed: %s", err)
@@ -351,9 +350,9 @@ func (o *Gonut) BuildInstance() error {
 
 		o.DPRINT("Generating random IV for Maru hash")
 		o.Instance.Iv = binary.LittleEndian.Uint64(GenRandomBytes(MARU_IV_LEN))
-	}
 
-	o.DPRINT("Generating hashes for API using IV: %x", o.Instance.Iv)
+	}
+	o.DPRINT("Generating hashes for API using IV: %016X", o.Instance.Iv)
 
 	for cnt, item := range ApiImports {
 		// calculate hash for DLL string
@@ -363,7 +362,7 @@ func (o *Gonut) BuildInstance() error {
 		// xor with DLL hash and store in instance
 		o.Instance.Hash[cnt] = Maru([]byte(item.Name), o.Instance.Iv) ^ dllHash
 
-		o.DPRINT("Hash for %s: %s = %016x", item.Module, item.Name, o.Instance.Hash[cnt])
+		o.DPRINT("Hash for %s: %s = %016X", item.Module, item.Name, o.Instance.Hash[cnt])
 	}
 
 	o.DPRINT("Setting number of API to %d", len(ApiImports))
@@ -476,7 +475,7 @@ func (o *Gonut) BuildInstance() error {
 		if o.Config.Entropy == DONUT_ENTROPY_DEFAULT {
 			o.DPRINT("Encrypting module")
 
-			o.Module.Mac = Maru(o.Instance.Sig[:], o.Instance.Iv)
+			o.Module.Mac = Maru(o.Instance.Sig[:DONUT_SIG_LEN], o.Instance.Iv)
 
 			o.ModuleData = DonutEncrypt(o.Instance.ModuleKey.MasterKey, o.Instance.ModuleKey.CounterNonce[:], o.Module.ToBytes())
 		}
@@ -493,17 +492,19 @@ func (o *Gonut) BuildInstance() error {
 	if o.Config.Entropy == DONUT_ENTROPY_DEFAULT {
 		o.DPRINT("Encrypting instance")
 
-		o.Instance.Mac = Maru(o.Instance.Sig[:], o.Instance.Iv)
+		o.Instance.Mac = Maru(o.Instance.Sig[:DONUT_SIG_LEN], o.Instance.Iv)
+		o.DPRINT("Instance.Mac: 0x%016X", o.Instance.Mac)
+
+		// 此处需要重新ToBytes一下以应用Mac值
+		o.InstanceData = o.Instance.ToBytes()
 
 		offset := unsafe.Offsetof(o.Instance.ApiCount)
-
 		o.InstanceData = append(o.InstanceData[:offset],
-			DonutEncrypt(o.Instance.ModuleKey.MasterKey, o.Instance.ModuleKey.CounterNonce[:], o.InstanceData[offset:])...,
+			DonutEncrypt(o.Instance.Key.MasterKey, o.Instance.Key.CounterNonce[:], o.InstanceData[offset:])...,
 		)
 	}
 
 	o.DPRINT("Leaving without error")
-
 	return nil
 }
 
@@ -609,7 +610,6 @@ func (o *Gonut) BuildLoader() error {
 	o.PicData = pl.Result()
 
 	o.DPRINT("len(o.PicData): %d", len(o.PicData))
-
 	return nil
 }
 
@@ -661,7 +661,6 @@ func (o *Gonut) SaveLoader() (err error) {
 	}
 
 	o.DPRINT("Leaving with error: %+v", err)
-
 	return err
 }
 
@@ -831,7 +830,7 @@ func (o *Gonut) ValidateLoaderConfig() error {
 
 	// no output file specified?
 	if o.Config.Output == "" {
-		o.Config.Output = "loader"
+		o.Config.Output = "g_loader"
 		// set to default name based on format
 		switch o.Config.Format {
 		case DONUT_FORMAT_BINARY:

@@ -5,3 +5,29 @@
         现改为在Config.Args前部添加生成的args0和空格 然后再copy
 压缩功能也有问题 压缩完就崩了 目前看应该不是压缩算法的问题 所有压缩都不可用 - 已解决
     原因: 压缩后只Module设置了ZLen忘记设置Len了
+
+{
+	// 临时设置固定 Instance.Key
+	hex.Decode(o.Instance.Key.MasterKey[:], []byte("8b6044bb0ee54daa35c3a5494234ce62"))
+	hex.Decode(o.Instance.Key.CounterNonce[:], []byte("25ac8715f94e67e48d61558a0bd416ee"))
+	o.DPRINT("MasterKey: %x CounterNonce: %x", o.Instance.Key.MasterKey, o.Instance.Key.CounterNonce)
+}
+
+
+{
+	// 临时设置固定 Instance.ModuleKey
+	hex.Decode(o.Instance.ModuleKey.MasterKey[:], []byte("4e0848967d12c4fb079c8f028aaa2110"))
+	hex.Decode(o.Instance.ModuleKey.CounterNonce[:], []byte("1bf3acf37c748ade8c461921bd8b5ae8"))
+	o.DPRINT("MasterKey: %x CounterNonce: %x", o.Instance.ModuleKey.MasterKey, o.Instance.ModuleKey.CounterNonce)
+}
+
+{
+	// 临时设置固定 Instance.Sig
+	hex.Decode(o.Instance.Sig[:DONUT_SIG_LEN], []byte("3633545933365450"))
+	o.DPRINT("Sig: %X", o.Instance.Sig[:DONUT_SIG_LEN])
+}
+
+{
+	// 临时设置固定 Instance.Iv
+	o.Instance.Iv = 0xD85D76AEE57E54A
+}
