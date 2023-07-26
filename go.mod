@@ -1,4 +1,4 @@
-module gonut
+module github.com/wabzsy/gonut
 
 go 1.20
 
