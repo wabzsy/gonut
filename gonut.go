@@ -176,6 +176,7 @@ func (o *Gonut) BuildModule() (err error) {
 	// Compress the input file?
 
 	if o.Config.Compress != DONUT_COMPRESS_NONE {
+		o.DPRINT("Compressing...")
 		switch o.Config.Compress {
 		case GONUT_COMPRESS_APLIB:
 			o.FileInfo.ZData, err = compression.APLibCompress(o.FileInfo.Data)

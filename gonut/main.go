@@ -101,7 +101,7 @@ func NewCommand(c *gonut.Config) *cobra.Command {
 	3=LZNT1(RTL)    [experimental, Windows only]
 	4=XPRESS(RTL)   [experimental, Windows only]
 	5=LZNT1         [experimental]
-	6=XPRESS        [experimental]
+	6=XPRESS        [experimental, recommended]
 `)
 	cmd.Flags().Uint32VarP(&c.Bypass, "bypass", "b", gonut.DONUT_BYPASS_CONTINUE,
 		`Bypass AMSI/WLDP/ETW:
