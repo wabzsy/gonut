@@ -337,6 +337,7 @@ func (o *Gonut) BuildInstance() error {
 			o.DPRINT("Generating random key for instance failed: %s", err)
 			return err
 		}
+		o.DPRINT("Instance.Key.MasterKey: %x Instance.Key.CounterNonce: %x", o.Instance.Key.MasterKey, o.Instance.Key.CounterNonce)
 
 		o.DPRINT("Generating random key for module")
 		// copy local key to configuration
@@ -344,9 +345,11 @@ func (o *Gonut) BuildInstance() error {
 			o.DPRINT("Generating random key for instance failed: %s", err)
 			return err
 		}
+		o.DPRINT("Instance.ModuleKey.MasterKey: %x Instance.ModuleKey.CounterNonce: %x", o.Instance.ModuleKey.MasterKey, o.Instance.ModuleKey.CounterNonce)
 
 		o.DPRINT("Generating random string to verify decryption")
 		copy(o.Instance.Sig[:DONUT_SIG_LEN], GenRandomBytes(DONUT_SIG_LEN))
+		o.DPRINT("Sig: %X", o.Instance.Sig[:DONUT_SIG_LEN])
 
 		o.DPRINT("Generating random IV for Maru hash")
 		o.Instance.Iv = binary.LittleEndian.Uint64(GenRandomBytes(MARU_IV_LEN))
