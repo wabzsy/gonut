@@ -55,7 +55,7 @@ const (
 
 // BypassType AMSI/WLDP/ETW options
 const (
-	DONUT_BYPASS_NONE     = 1 // Disables bypassing AMSI/WDLP/ETW
+	DONUT_BYPASS_NONE     = 1 // Disables bypassing AMSI/WLDP/ETW
 	DONUT_BYPASS_ABORT    = 2 // If bypassing AMSI/WLDP/ETW fails, the loader stops running
 	DONUT_BYPASS_CONTINUE = 3 // If bypassing AMSI/WLDP/ETW fails, the loader continues running
 )

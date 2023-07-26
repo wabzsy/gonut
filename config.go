@@ -7,7 +7,7 @@ type Config struct {
 	// general / misc options for loader
 
 	Arch     int    // target architecture
-	Bypass   uint32 // bypass option for AMSI/WDLP
+	Bypass   uint32 // bypass option for AMSI/WLDP
 	Headers  uint32 // preserve PE headers option
 	Compress uint32 // engine to use when compressing file via RtlCompressBuffer
 	Entropy  uint32 // entropy/encryption level
