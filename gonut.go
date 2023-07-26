@@ -5,6 +5,7 @@ import (
 	"encoding/binary"
 	"fmt"
 	"github.com/Binject/debug/pe"
+	"github.com/wabzsy/compression"
 	"log"
 	"net/url"
 	"os"
@@ -174,8 +175,25 @@ func (o *Gonut) BuildModule() error {
 
 	// Compress the input file?
 	if o.Config.Compress != DONUT_COMPRESS_NONE {
-		// TODO 实现压缩功能
-		o.Module.Data = o.FileInfo.ZData
+		var err error
+
+		switch o.Config.Compress {
+		case GONUT_COMPRESS_APLIB:
+			o.FileInfo.ZData, err = compression.APLibCompress(o.FileInfo.Data)
+		case GONUT_COMPRESS_LZNT1:
+			o.FileInfo.ZData, err = compression.LZNT1Compress(o.FileInfo.Data)
+		case GONUT_COMPRESS_LZNT1_RTL:
+			o.FileInfo.ZData, err = compression.RtlLZNT1Compress(o.FileInfo.Data)
+		case GONUT_COMPRESS_XPRESS:
+			o.FileInfo.ZData, err = compression.XPressCompress(o.FileInfo.Data)
+		case GONUT_COMPRESS_XPRESS_RTL:
+			o.FileInfo.ZData, err = compression.RtlXPressCompress(o.FileInfo.Data)
+		}
+
+		if err != nil {
+			o.DPRINT("Failed to compress data: %s", err)
+			return err
+		}
 	} else {
 		o.Module.Data = o.FileInfo.Data
 	}
@@ -757,11 +775,11 @@ func (o *Gonut) ValidateLoaderConfig() error {
 	switch o.Config.Compress {
 	case
 		DONUT_COMPRESS_NONE,
-		DONUT_COMPRESS_APLIB:
-	case
-		DONUT_COMPRESS_LZNT1,
-		DONUT_COMPRESS_XPRESS:
-		return fmt.Errorf("LZNT1(3) and Xpress(4) are currently unavailable in 'gonut', please use 'donut'")
+		GONUT_COMPRESS_APLIB,
+		GONUT_COMPRESS_LZNT1_RTL,
+		GONUT_COMPRESS_XPRESS_RTL,
+		GONUT_COMPRESS_LZNT1,
+		GONUT_COMPRESS_XPRESS:
 	default:
 		return fmt.Errorf("invalid `compress option` specified: %d", o.Config.Compress)
 	}
