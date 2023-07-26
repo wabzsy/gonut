@@ -201,17 +201,19 @@ func (o *Gonut) BuildModule() (err error) {
 			return err
 		}
 
+		o.DSave("g_compressed", o.FileInfo.ZData)
+
 		o.Module.Data = o.FileInfo.ZData
-		o.Module.ZLen = o.FileInfo.ZLen()
 	} else {
 		o.Config.Compress = DONUT_COMPRESS_NONE
 		o.Module.Data = o.FileInfo.Data
-		o.Module.Len = o.FileInfo.Len()
 	}
 
 	// Set the module info
 	o.Module.Type = o.Config.ModuleType
 	o.Module.Compress = o.Config.Compress
+	o.Module.Len = o.FileInfo.Len()
+	o.Module.ZLen = o.FileInfo.ZLen()
 
 	if o.Config.Thread {
 		o.Module.Thread = 1
@@ -268,17 +270,20 @@ func (o *Gonut) BuildModule() (err error) {
 			// If entropy is disabled
 			if o.Config.Entropy == DONUT_ENTROPY_NONE {
 				// Set to "AAAA"
-				copy(o.Module.Args[:4], "AAAA")
+				o.Config.Args = "AAAA " + o.Config.Args
+				//copy(o.Module.Args[:4], "AAAA")
 			} else {
 				// Generate 4-byte random name
-				copy(o.Module.Args[:4], GenRandomString(4))
+				o.Config.Args = GenRandomString(4) + " " + o.Config.Args
+				//copy(o.Module.Args[:4], GenRandomString(4))
 			}
 			// Add space
-			o.Module.Args[4] = ' '
+			//o.Module.Args[4] = ' '
 		}
 		//
 		// Copy parameters
-		copy(o.Module.Args[:DONUT_MAX_NAME-6], o.Config.Args)
+		//copy(o.Module.Args[:DONUT_MAX_NAME-6], o.Config.Args)
+		copy(o.Module.Args[:DONUT_MAX_NAME], o.Config.Args)
 	}
 
 	o.DPRINT("Copying data to module")
