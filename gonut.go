@@ -174,37 +174,42 @@ func (o *Gonut) ReadFileInfo() error {
 func (o *Gonut) BuildModule() (err error) {
 
 	// Compress the input file?
-	switch o.Config.Compress {
-	case GONUT_COMPRESS_NONE:
-		o.Module.Data = o.FileInfo.Data
-		o.Config.Compress = DONUT_COMPRESS_NONE
-	case GONUT_COMPRESS_APLIB:
-		o.FileInfo.ZData, err = compression.APLibCompress(o.FileInfo.Data)
-		o.Config.Compress = DONUT_COMPRESS_APLIB
-	case GONUT_COMPRESS_LZNT1:
-		o.FileInfo.ZData, err = compression.LZNT1Compress(o.FileInfo.Data)
-		o.Config.Compress = DONUT_COMPRESS_LZNT1
-	case GONUT_COMPRESS_LZNT1_RTL:
-		o.FileInfo.ZData, err = compression.RtlLZNT1Compress(o.FileInfo.Data)
-		o.Config.Compress = DONUT_COMPRESS_LZNT1
-	case GONUT_COMPRESS_XPRESS:
-		o.FileInfo.ZData, err = compression.XPressCompress(o.FileInfo.Data)
-		o.Config.Compress = DONUT_COMPRESS_XPRESS
-	case GONUT_COMPRESS_XPRESS_RTL:
-		o.FileInfo.ZData, err = compression.RtlXPressCompress(o.FileInfo.Data)
-		o.Config.Compress = DONUT_COMPRESS_XPRESS
-	}
 
-	if err != nil {
-		o.DPRINT("Failed to compress data: %s", err)
-		return err
+	if o.Config.Compress != DONUT_COMPRESS_NONE {
+		switch o.Config.Compress {
+		case GONUT_COMPRESS_APLIB:
+			o.FileInfo.ZData, err = compression.APLibCompress(o.FileInfo.Data)
+			o.Config.Compress = DONUT_COMPRESS_APLIB
+		case GONUT_COMPRESS_LZNT1:
+			o.FileInfo.ZData, err = compression.LZNT1Compress(o.FileInfo.Data)
+			o.Config.Compress = DONUT_COMPRESS_LZNT1
+		case GONUT_COMPRESS_LZNT1_RTL:
+			o.FileInfo.ZData, err = compression.RtlLZNT1Compress(o.FileInfo.Data)
+			o.Config.Compress = DONUT_COMPRESS_LZNT1
+		case GONUT_COMPRESS_XPRESS:
+			o.FileInfo.ZData, err = compression.XPressCompress(o.FileInfo.Data)
+			o.Config.Compress = DONUT_COMPRESS_XPRESS
+		case GONUT_COMPRESS_XPRESS_RTL:
+			o.FileInfo.ZData, err = compression.RtlXPressCompress(o.FileInfo.Data)
+			o.Config.Compress = DONUT_COMPRESS_XPRESS
+		}
+
+		if err != nil {
+			o.DPRINT("Failed to compress data: %s", err)
+			return err
+		}
+
+		o.Module.Data = o.FileInfo.ZData
+		o.Module.ZLen = o.FileInfo.ZLen()
+	} else {
+		o.Config.Compress = DONUT_COMPRESS_NONE
+		o.Module.Data = o.FileInfo.Data
+		o.Module.Len = o.FileInfo.Len()
 	}
 
 	// Set the module info
 	o.Module.Type = o.Config.ModuleType
 	o.Module.Compress = o.Config.Compress
-	o.Module.Len = o.FileInfo.Len()
-	o.Module.ZLen = o.FileInfo.ZLen()
 
 	if o.Config.Thread {
 		o.Module.Thread = 1
