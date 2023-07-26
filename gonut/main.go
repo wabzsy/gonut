@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/spf13/cobra"
-	"gonut"
+	"github.com/wabzsy/gonut"
 	"log"
 )
 
