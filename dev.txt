@@ -1,5 +1,5 @@
 加密功能有问题 加密完了无法执行, 仅限加密 不加密都正常 - 已解决
-    原因: 1.IV设置不正确, 2.先ToBytes的后设置的MAC导致MAC未生效
+    原因: 1.IV设置不正确, 2.先ToBytes的后设置的MAC导致MAC未生效,3 Inst.Sig不正确, 应该截断至DONUT_SIG_LEN
 
 参数功能好像也有bug 需要再测试 - 已解决
     原因: 当payload为exe的时候, copy o.Config.Args时覆盖了生成的args0和空格,
