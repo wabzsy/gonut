@@ -6,6 +6,25 @@ import "unsafe"
 // donut/include/donut.h
 type ModuleType uint32
 
+func (x ModuleType) Name() string {
+	switch x {
+	case DONUT_MODULE_NET_DLL:
+		return ".NET DLL"
+	case DONUT_MODULE_NET_EXE:
+		return ".NET EXE"
+	case DONUT_MODULE_DLL:
+		return "DLL"
+	case DONUT_MODULE_EXE:
+		return "EXE"
+	case DONUT_MODULE_VBS:
+		return "VBScript"
+	case DONUT_MODULE_JS:
+		return "JScript"
+	default:
+		return "Unknown"
+	}
+}
+
 // donut/include/donut.h
 const (
 	DONUT_MODULE_NET_DLL ModuleType = 1 // .NET DLL. Requires class and method
@@ -20,9 +39,9 @@ const (
 // donut/include/donut.h
 // typedef struct _DONUT_MODULE { ... }
 type DonutModule struct {
-	Type     ModuleType // EXE/DLL/JS/VBS
-	Thread   uint32     // run entrypoint of unmanaged EXE as a thread
-	Compress uint32     // indicates engine used for compression
+	Type     ModuleType      // EXE/DLL/JS/VBS
+	Thread   uint32          // run entrypoint of unmanaged EXE as a thread
+	Compress CompressionType // indicates engine used for compression
 
 	Runtime [DONUT_MAX_NAME]byte // runtime version for .NET EXE/DLL
 	Domain  [DONUT_MAX_NAME]byte // domain name to use for .NET EXE/DLL

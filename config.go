@@ -6,15 +6,15 @@ type Config struct {
 
 	// general / misc options for loader
 
-	Arch     int    // target architecture
-	Bypass   uint32 // bypass option for AMSI/WLDP
-	Headers  uint32 // preserve PE headers option
-	Compress uint32 // engine to use when compressing file via RtlCompressBuffer
-	Entropy  uint32 // entropy/encryption level
-	Format   int    // output format for loader
-	ExitOpt  uint32 // return to caller, invoke RtlExitUserProcess to terminate the host process, or block indefinitely
-	Thread   bool   // run entrypoint of unmanaged EXE as a thread. attempts to intercept calls to exit-related API
-	OEP      uint32 // original entrypoint of target host file
+	Arch     ArchType        // target architecture
+	Bypass   BypassType      // bypass option for AMSI/WLDP
+	Headers  HeadersType     // preserve PE headers option
+	Compress CompressionType // engine to use when compressing file via RtlCompressBuffer
+	Entropy  EntropyType     // entropy/encryption level
+	Format   FormatType      // output format for loader
+	ExitOpt  ExitType        // return to caller, invoke RtlExitUserProcess to terminate the host process, or block indefinitely
+	Thread   BoolType        // run entrypoint of unmanaged EXE as a thread. attempts to intercept calls to exit-related API
+	OEP      uint32          // original entrypoint of target host file
 
 	// files in/out
 	Input  string // name of input file to read and load in-memory
@@ -27,8 +27,8 @@ type Config struct {
 	Method  string // name of method or DLL function to invoke for .NET DLL and unmanaged DLL
 
 	// command line for DLL/EXE
-	Args    string // command line to use for unmanaged DLL/EXE and .NET DLL/EXE
-	Unicode bool   // param is passed to DLL function without converting to unicode
+	Args    string   // command line to use for unmanaged DLL/EXE and .NET DLL/EXE
+	Unicode BoolType // param is passed to DLL function without converting to unicode
 
 	// module overloading stuff
 	Decoy string // path of decoy module
@@ -45,16 +45,19 @@ type Config struct {
 	InstanceType InstanceType
 
 	Verbose bool //  verbose output
+
+	// Gonut only
+	GonutCompress CompressionType // Gonut compression engine
 }
 
 func DefaultConfig() *Config {
 	return &Config{
-		Arch:     DONUT_ARCH_X96,
-		Bypass:   DONUT_BYPASS_CONTINUE,
-		Headers:  DONUT_HEADERS_OVERWRITE,
-		Format:   DONUT_FORMAT_BINARY,
-		Compress: GONUT_COMPRESS_NONE,
-		Entropy:  DONUT_ENTROPY_DEFAULT,
-		ExitOpt:  DONUT_OPT_EXIT_THREAD,
+		Arch:          DONUT_ARCH_X96,
+		Bypass:        DONUT_BYPASS_CONTINUE,
+		Headers:       DONUT_HEADERS_OVERWRITE,
+		Format:        DONUT_FORMAT_BINARY,
+		GonutCompress: GONUT_COMPRESS_NONE,
+		Entropy:       DONUT_ENTROPY_DEFAULT,
+		ExitOpt:       DONUT_OPT_EXIT_THREAD,
 	}
 }

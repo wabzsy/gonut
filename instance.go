@@ -5,6 +5,19 @@ import "unsafe"
 // InstanceType instance type
 type InstanceType uint32
 
+func (x InstanceType) Name() string {
+	switch x {
+	case DONUT_INSTANCE_EMBED:
+		return "Embedded"
+	case DONUT_INSTANCE_HTTP:
+		return "HTTP"
+	case DONUT_INSTANCE_DNS:
+		return "DNS"
+	default:
+		return "Unknown"
+	}
+}
+
 const (
 	DONUT_INSTANCE_EMBED InstanceType = 1 // Self-contained
 	DONUT_INSTANCE_HTTP  InstanceType = 2 // Download from remote HTTP/HTTPS server
@@ -23,9 +36,9 @@ type DonutInstance struct {
 
 	Hash [64]uint64 // holds up to 64 api hashes/addrs {api}
 
-	ExitOpt uint32 // 1 to call RtlExitUserProcess and terminate the host process, 2 to never exit or cleanup and block
-	Entropy uint32 // indicates entropy level
-	OEP     uint32 // original entrypoint
+	ExitOpt ExitType    // 1 to call RtlExitUserProcess and terminate the host process, 2 to never exit or cleanup and block
+	Entropy EntropyType // indicates entropy level
+	OEP     uint32      // original entrypoint
 
 	// everything from here is encrypted
 	ApiCount uint32               // the 64-bit hashes of API required for instance to work
@@ -41,17 +54,17 @@ type DonutInstance struct {
 	CmdSymbols [DONUT_MAX_NAME]byte // symbols related to command line
 	ExitApi    [DONUT_MAX_NAME]byte // exit-related API
 
-	Bypass             uint32   // indicates behaviour of byassing AMSI/WLDP/ETW
-	Headers            uint32   // indicates whether to overwrite PE headers
-	WldpQuery          [32]byte // WldpQueryDynamicCodeTrust
-	WldpIsApproved     [32]byte // WldpIsClassInApprovedList
-	AmsiInit           [16]byte // AmsiInitialize
-	AmsiScanBuf        [16]byte // AmsiScanBuffer
-	AmsiScanStr        [16]byte // AmsiScanString
-	EtwEventWrite      [16]byte // EtwEventWrite
-	EtwEventUnregister [20]byte // EtwEventUnregister
-	EtwRet64           [1]byte  // "ret" instruction for Etw
-	EtwRet32           [4]byte  // "ret 14h" instruction for Etw
+	Bypass             BypassType  // indicates behaviour of byassing AMSI/WLDP/ETW
+	Headers            HeadersType // indicates whether to overwrite PE headers
+	WldpQuery          [32]byte    // WldpQueryDynamicCodeTrust
+	WldpIsApproved     [32]byte    // WldpIsClassInApprovedList
+	AmsiInit           [16]byte    // AmsiInitialize
+	AmsiScanBuf        [16]byte    // AmsiScanBuffer
+	AmsiScanStr        [16]byte    // AmsiScanString
+	EtwEventWrite      [16]byte    // EtwEventWrite
+	EtwEventUnregister [20]byte    // EtwEventUnregister
+	EtwRet64           [1]byte     // "ret" instruction for Etw
+	EtwRet32           [4]byte     // "ret 14h" instruction for Etw
 
 	Wscript    [8]byte  // WScript
 	WscriptExe [12]byte // wscript.exe

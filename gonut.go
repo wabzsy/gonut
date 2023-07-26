@@ -175,9 +175,9 @@ func (o *Gonut) ReadFileInfo() error {
 func (o *Gonut) BuildModule() (err error) {
 
 	// Compress the input file?
-	if o.Config.Compress != DONUT_COMPRESS_NONE {
+	if o.Config.GonutCompress != GONUT_COMPRESS_NONE {
 		o.DPRINT("Compressing...")
-		switch o.Config.Compress {
+		switch o.Config.GonutCompress {
 		case GONUT_COMPRESS_APLIB:
 			o.FileInfo.ZData, err = compression.APLibCompress(o.FileInfo.Data)
 			o.Config.Compress = DONUT_COMPRESS_APLIB
@@ -213,14 +213,8 @@ func (o *Gonut) BuildModule() (err error) {
 	o.Module.Compress = o.Config.Compress
 	o.Module.Len = o.FileInfo.Len()
 	o.Module.ZLen = o.FileInfo.ZLen()
-
-	if o.Config.Thread {
-		o.Module.Thread = 1
-	}
-
-	if o.Config.Unicode {
-		o.Module.Unicode = 1
-	}
+	o.Module.Thread = o.Config.Thread.ToUint32()
+	o.Module.Unicode = o.Config.Unicode.ToUint32()
 
 	// DotNet assembly?
 	if o.Module.Type == DONUT_MODULE_NET_DLL || o.Module.Type == DONUT_MODULE_NET_EXE {
@@ -786,7 +780,7 @@ func (o *Gonut) ValidateLoaderConfig() error {
 	}
 
 	// check Compress
-	switch o.Config.Compress {
+	switch o.Config.GonutCompress {
 	case
 		GONUT_COMPRESS_NONE,
 		GONUT_COMPRESS_APLIB,
@@ -799,7 +793,7 @@ func (o *Gonut) ValidateLoaderConfig() error {
 			return fmt.Errorf("RtlCompressBuffer is only available on Windows systems")
 		}
 	default:
-		return fmt.Errorf("invalid `compress option` specified: %d", o.Config.Compress)
+		return fmt.Errorf("invalid `compress option` specified: %d", o.Config.GonutCompress)
 	}
 
 	o.Config.InstanceType = DONUT_INSTANCE_EMBED
@@ -920,7 +914,7 @@ type FileInfo struct {
 	ZData []byte
 
 	Type ModuleType
-	Arch int
+	Arch ArchType
 	Ver  string
 
 	PeFile *pe.File
