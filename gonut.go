@@ -10,6 +10,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"unsafe"
 )
@@ -782,10 +783,14 @@ func (o *Gonut) ValidateLoaderConfig() error {
 	case
 		GONUT_COMPRESS_NONE,
 		GONUT_COMPRESS_APLIB,
-		GONUT_COMPRESS_LZNT1_RTL,
-		GONUT_COMPRESS_XPRESS_RTL,
 		GONUT_COMPRESS_LZNT1,
 		GONUT_COMPRESS_XPRESS:
+	case
+		GONUT_COMPRESS_LZNT1_RTL,
+		GONUT_COMPRESS_XPRESS_RTL:
+		if runtime.GOOS != "windows" {
+			return fmt.Errorf("RtlCompressBuffer is only available on Windows systems")
+		}
 	default:
 		return fmt.Errorf("invalid `compress option` specified: %d", o.Config.Compress)
 	}
