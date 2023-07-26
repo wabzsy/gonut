@@ -935,9 +935,7 @@ type PicGenerator struct {
 }
 
 func (p *PicGenerator) PutByte(c byte) {
-	if err := p.buffer.WriteByte(c); err != nil {
-		panic(err)
-	}
+	p.buffer.WriteByte(c)
 }
 
 func (p *PicGenerator) PutUint32(v uint32) {
@@ -947,9 +945,7 @@ func (p *PicGenerator) PutUint32(v uint32) {
 }
 
 func (p *PicGenerator) PutBytes(v []byte) {
-	if _, err := p.buffer.Write(v); err != nil {
-		panic(err)
-	}
+	p.buffer.Write(v)
 }
 
 func (p *PicGenerator) Result() []byte {
