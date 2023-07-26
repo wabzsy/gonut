@@ -21,14 +21,22 @@ const (
 	DONUT_FORMAT_UUID       = 9
 )
 
-// CompressionType compression engine
+// CompressionType compression engine (Gonut)
 const (
-	DONUT_COMPRESS_NONE       = 1
+	GONUT_COMPRESS_NONE       = 1
 	GONUT_COMPRESS_APLIB      = 2
-	GONUT_COMPRESS_LZNT1_RTL  = 3 // COMPRESSION_FORMAT_LZNT1 (windows only)
-	GONUT_COMPRESS_XPRESS_RTL = 4 // COMPRESSION_FORMAT_XPRESS (windows only)
+	GONUT_COMPRESS_LZNT1_RTL  = 3 // windows only
+	GONUT_COMPRESS_XPRESS_RTL = 4 // windows only
 	GONUT_COMPRESS_LZNT1      = 5
 	GONUT_COMPRESS_XPRESS     = 6
+)
+
+// CompressionType compression engine
+const (
+	DONUT_COMPRESS_NONE   = 1
+	DONUT_COMPRESS_APLIB  = 2
+	DONUT_COMPRESS_LZNT1  = 3 // COMPRESSION_FORMAT_LZNT1
+	DONUT_COMPRESS_XPRESS = 4 // COMPRESSION_FORMAT_XPRESS
 )
 
 // EntropyType entropy level

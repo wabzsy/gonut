@@ -171,31 +171,33 @@ func (o *Gonut) ReadFileInfo() error {
 // BuildModule Create a Donut module from Donut configuration
 // donut/donut.c
 // static int build_module(PDONUT_CONFIG c) { ... }
-func (o *Gonut) BuildModule() error {
+func (o *Gonut) BuildModule() (err error) {
 
 	// Compress the input file?
-	if o.Config.Compress != DONUT_COMPRESS_NONE {
-		var err error
-
-		switch o.Config.Compress {
-		case GONUT_COMPRESS_APLIB:
-			o.FileInfo.ZData, err = compression.APLibCompress(o.FileInfo.Data)
-		case GONUT_COMPRESS_LZNT1:
-			o.FileInfo.ZData, err = compression.LZNT1Compress(o.FileInfo.Data)
-		case GONUT_COMPRESS_LZNT1_RTL:
-			o.FileInfo.ZData, err = compression.RtlLZNT1Compress(o.FileInfo.Data)
-		case GONUT_COMPRESS_XPRESS:
-			o.FileInfo.ZData, err = compression.XPressCompress(o.FileInfo.Data)
-		case GONUT_COMPRESS_XPRESS_RTL:
-			o.FileInfo.ZData, err = compression.RtlXPressCompress(o.FileInfo.Data)
-		}
-
-		if err != nil {
-			o.DPRINT("Failed to compress data: %s", err)
-			return err
-		}
-	} else {
+	switch o.Config.Compress {
+	case GONUT_COMPRESS_NONE:
 		o.Module.Data = o.FileInfo.Data
+		o.Config.Compress = DONUT_COMPRESS_NONE
+	case GONUT_COMPRESS_APLIB:
+		o.FileInfo.ZData, err = compression.APLibCompress(o.FileInfo.Data)
+		o.Config.Compress = DONUT_COMPRESS_APLIB
+	case GONUT_COMPRESS_LZNT1:
+		o.FileInfo.ZData, err = compression.LZNT1Compress(o.FileInfo.Data)
+		o.Config.Compress = DONUT_COMPRESS_LZNT1
+	case GONUT_COMPRESS_LZNT1_RTL:
+		o.FileInfo.ZData, err = compression.RtlLZNT1Compress(o.FileInfo.Data)
+		o.Config.Compress = DONUT_COMPRESS_LZNT1
+	case GONUT_COMPRESS_XPRESS:
+		o.FileInfo.ZData, err = compression.XPressCompress(o.FileInfo.Data)
+		o.Config.Compress = DONUT_COMPRESS_XPRESS
+	case GONUT_COMPRESS_XPRESS_RTL:
+		o.FileInfo.ZData, err = compression.RtlXPressCompress(o.FileInfo.Data)
+		o.Config.Compress = DONUT_COMPRESS_XPRESS
+	}
+
+	if err != nil {
+		o.DPRINT("Failed to compress data: %s", err)
+		return err
 	}
 
 	// Set the module info
@@ -606,9 +608,7 @@ func (o *Gonut) BuildLoader() error {
 func (o *Gonut) SaveLoader() (err error) {
 
 	// if DEBUG is defined, save module and instance to disk
-	o.DPRINT("Saving module to file. %d bytes.", len(o.ModuleData))
 	o.DSave("g_module", o.ModuleData)
-	o.DPRINT("Saving instance to file. %d bytes.", len(o.InstanceData))
 	o.DSave("g_instance", o.InstanceData)
 
 	// If the module will be stored on a remote server
@@ -774,7 +774,7 @@ func (o *Gonut) ValidateLoaderConfig() error {
 	// check Compress
 	switch o.Config.Compress {
 	case
-		DONUT_COMPRESS_NONE,
+		GONUT_COMPRESS_NONE,
 		GONUT_COMPRESS_APLIB,
 		GONUT_COMPRESS_LZNT1_RTL,
 		GONUT_COMPRESS_XPRESS_RTL,
@@ -815,7 +815,7 @@ func (o *Gonut) ValidateLoaderConfig() error {
 
 	// no output file specified?
 	if o.Config.Output == "" {
-		o.Config.Output = "g_loader"
+		o.Config.Output = "loader"
 		// set to default name based on format
 		switch o.Config.Format {
 		case DONUT_FORMAT_BINARY:
@@ -877,6 +877,7 @@ func (o *Gonut) DPRINT(format string, v ...any) {
 
 func (o *Gonut) DSave(name string, data []byte) {
 	if o.Config.Verbose {
+		o.DPRINT("Saving %s to file. %d bytes.", name, len(data))
 		if err := os.WriteFile(name, data, 0666); err != nil {
 			panic(err)
 		}

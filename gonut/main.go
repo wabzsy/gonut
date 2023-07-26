@@ -30,7 +30,7 @@ func NewCommand(c *gonut.Config) *cobra.Command {
   gonut -i loader.dll -c TestClass -m RunProcess -p "calc notepad" -s http://remote_server.com/modules/
   gonut -z2 -k2 -t -i loader.exe -o out.bin
 `,
-		Version:       "v0.0.1",
+		Version:       "v1.0.0-1",
 		SilenceErrors: true,
 	}
 
@@ -40,19 +40,40 @@ func NewCommand(c *gonut.Config) *cobra.Command {
 	cmd.Flags().StringVarP(&c.Server, "server", "s", "",
 		"Server that will host the Donut module. Credentials may be provided in the following format: https://username:password@192.168.0.1/")
 	cmd.Flags().Uint32VarP(&c.Entropy, "entropy", "e", gonut.DONUT_ENTROPY_DEFAULT,
-		"Entropy. 1=None, 2=Use random names, 3=Random names + symmetric encryption")
+		`Entropy:
+	1=None
+	2=Use random names
+	3=Random names + symmetric encryption
+`)
 
 	// -PIC/SHELLCODE OPTIONS-
 	cmd.Flags().IntVarP(&c.Arch, "arch", "a", gonut.DONUT_ARCH_X96,
-		"Target architecture : 1=x86, 2=amd64, 3=x86+amd64.")
+		`Target architecture:
+	1=x86
+	2=amd64
+	3=x86+amd64
+`)
 	cmd.Flags().StringVarP(&c.Output, "output", "o", "",
 		"Output file to save loader.")
 	cmd.Flags().IntVarP(&c.Format, "format", "f", gonut.DONUT_FORMAT_BINARY,
-		"Output format. 1=Binary, 2=Base64, 3=C, 4=Ruby, 5=Python, 6=Powershell, 7=C#, 8=Hex")
+		`Output format:
+	1=Binary
+	2=Base64
+	3=C
+	4=Ruby
+	5=Python
+	6=Powershell
+	7=C#
+	8=Hex
+`)
 	cmd.Flags().Uint32VarP(&c.OEP, "oep", "y", 0,
 		"Create thread for loader and continue execution at <addr> supplied. (eg. 0x1234)")
 	cmd.Flags().Uint32VarP(&c.ExitOpt, "exit", "x", gonut.DONUT_OPT_EXIT_THREAD,
-		"Exit behaviour. 1=Exit thread, 2=Exit process, 3=Do not exit or cleanup and block indefinitely")
+		`Exit behaviour:
+	1=Exit thread
+	2=Exit process
+	3=Do not exit or cleanup and block indefinitely
+`)
 
 	// -FILE OPTIONS-
 	cmd.Flags().StringVarP(&c.Class, "class", "c", "",
@@ -73,12 +94,26 @@ func NewCommand(c *gonut.Config) *cobra.Command {
 		"Execute the entrypoint of an unmanaged EXE as a thread.")
 
 	// -EXTRA-
-	cmd.Flags().Uint32VarP(&c.Compress, "compress", "z", gonut.DONUT_COMPRESS_NONE,
-		"Pack/Compress file. 1=None, 2=aPLib, 3=LZNT1, 4=Xpress")
+	cmd.Flags().Uint32VarP(&c.Compress, "compress", "z", gonut.GONUT_COMPRESS_NONE,
+		`Pack/Compress file:
+	1=None
+	2=aPLib         [experimental]
+	3=LZNT1(RTL)    [experimental, Windows only]
+	4=XPRESS(RTL)   [experimental, Windows only]
+	5=LZNT1         [experimental]
+	6=XPRESS        [experimental]
+`)
 	cmd.Flags().Uint32VarP(&c.Bypass, "bypass", "b", gonut.DONUT_BYPASS_CONTINUE,
-		"Bypass AMSI/WLDP/ETW : 1=None, 2=Abort on fail, 3=Continue on fail.")
+		`Bypass AMSI/WLDP/ETW:
+	1=None
+	2=Abort on fail
+	3=Continue on fail
+`)
 	cmd.Flags().Uint32VarP(&c.Headers, "headers", "k", gonut.DONUT_HEADERS_OVERWRITE,
-		"Preserve PE headers. 1=Overwrite, 2=Keep all")
+		`Preserve PE headers:
+	1=Overwrite
+	2=Keep all
+`)
 	cmd.Flags().StringVarP(&c.Decoy, "decoy", "j", "",
 		"Optional path of decoy module for Module Overloading.")
 

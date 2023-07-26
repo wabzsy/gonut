@@ -53,7 +53,7 @@ func DefaultConfig() *Config {
 		Bypass:   DONUT_BYPASS_CONTINUE,
 		Headers:  DONUT_HEADERS_OVERWRITE,
 		Format:   DONUT_FORMAT_BINARY,
-		Compress: DONUT_COMPRESS_NONE,
+		Compress: GONUT_COMPRESS_NONE,
 		Entropy:  DONUT_ENTROPY_DEFAULT,
 		ExitOpt:  DONUT_OPT_EXIT_THREAD,
 	}
