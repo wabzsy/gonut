@@ -56,7 +56,11 @@ func (f *FormatTemplate) ToPython() []byte {
 
 func (f *FormatTemplate) ToPowerShell() []byte {
 	buffer := bytes.NewBufferString("[Byte[]] $buf = ")
-	// TODO
+	for _, c := range f.Data {
+		buffer.WriteString(fmt.Sprintf("0x%02x,", c))
+	}
+
+	buffer.Bytes()[buffer.Len()-1] = '\n'
 	return buffer.Bytes()
 }
 

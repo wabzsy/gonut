@@ -27,7 +27,8 @@ func TestFormatTemplate_ToHex(t *testing.T) {
 }
 
 func TestFormatTemplate_ToPowerShell(t *testing.T) {
-
+	tpl := NewFormatTemplate(GenRandomBytes(33))
+	t.Logf("\n%s\n", tpl.ToPowerShell())
 }
 
 func TestFormatTemplate_ToPython(t *testing.T) {
