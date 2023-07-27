@@ -79,6 +79,20 @@ func (f *FormatTemplate) ToCSharp() []byte {
 	return buffer.Bytes()
 }
 
+func (f *FormatTemplate) ToGolang() []byte {
+	buffer := bytes.NewBufferString(fmt.Sprintf("buf :=  []byte{"))
+	rows := Convert1d2d(f.Data, 12)
+	for _, row := range rows {
+		buffer.WriteString("\n")
+		for _, c := range row {
+			buffer.WriteString(fmt.Sprintf("0x%02x,", c))
+		}
+	}
+
+	buffer.WriteString("\n}\n")
+	return buffer.Bytes()
+}
+
 func (f *FormatTemplate) ToUUID() []byte {
 	buffer := bytes.NewBufferString("TODO")
 	// TODO
