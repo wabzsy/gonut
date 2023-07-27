@@ -94,8 +94,20 @@ func (f *FormatTemplate) ToGolang() []byte {
 }
 
 func (f *FormatTemplate) ToUUID() []byte {
-	buffer := bytes.NewBufferString("TODO")
-	// TODO
+	buffer := bytes.NewBufferString("")
+	rows := Convert1d2d(f.Data, 16)
+	for _, row := range rows {
+		if len(row) < 16 {
+			row = append(row, bytes.Repeat([]byte{byte(0x90)}, 16-len(row))...)
+		}
+		buffer.WriteString(fmt.Sprintf("%02x%02x%02x%02x-", row[3], row[2], row[1], row[0]))
+		buffer.WriteString(fmt.Sprintf("%02x%02x-", row[5], row[4]))
+		buffer.WriteString(fmt.Sprintf("%02x%02x-", row[7], row[6]))
+		buffer.WriteString(fmt.Sprintf("%02x%02x-", row[8], row[9]))
+		buffer.WriteString(fmt.Sprintf("%08x", row[10:16]))
+		buffer.WriteString("\n")
+	}
+
 	return buffer.Bytes()
 }
 

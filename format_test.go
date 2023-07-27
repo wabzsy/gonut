@@ -2,7 +2,6 @@ package gonut
 
 import (
 	"encoding/hex"
-	"fmt"
 	"testing"
 )
 
@@ -47,9 +46,6 @@ func TestFormatTemplate_ToGolang(t *testing.T) {
 }
 
 func TestFormatTemplate_ToUUID(t *testing.T) {
-	x := GenRandomBytes(33)
-	fmt.Println(hex.Dump(x))
-	//t.Log(int(math.Ceil(float64(len(x)) / 16)))
-
-	t.Log(Convert1d2d(x, 33))
+	tpl := NewFormatTemplate(GenRandomBytes(277))
+	t.Logf("\n%s\n", tpl.ToUUID())
 }
