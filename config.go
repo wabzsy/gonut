@@ -6,15 +6,15 @@ type Config struct {
 
 	// general / misc options for loader
 
-	Arch     ArchType        // target architecture
-	Bypass   BypassType      // bypass option for AMSI/WLDP
-	Headers  HeadersType     // preserve PE headers option
-	Compress CompressionType // engine to use when compressing file via RtlCompressBuffer
-	Entropy  EntropyType     // entropy/encryption level
-	Format   FormatType      // output format for loader
-	ExitOpt  ExitType        // return to caller, invoke RtlExitUserProcess to terminate the host process, or block indefinitely
-	Thread   BoolType        // run entrypoint of unmanaged EXE as a thread. attempts to intercept calls to exit-related API
-	OEP      uint32          // original entrypoint of target host file
+	Arch     ArchType             // target architecture
+	Bypass   BypassType           // bypass option for AMSI/WLDP
+	Headers  HeadersType          // preserve PE headers option
+	Compress DonutCompressionType // engine to use when compressing file via RtlCompressBuffer
+	Entropy  EntropyType          // entropy/encryption level
+	Format   FormatType           // output format for loader
+	ExitOpt  ExitType             // return to caller, invoke RtlExitUserProcess to terminate the host process, or block indefinitely
+	Thread   BoolType             // run entrypoint of unmanaged EXE as a thread. attempts to intercept calls to exit-related API
+	OEP      uint32               // original entrypoint of target host file
 
 	// files in/out
 	Input  string // name of input file to read and load in-memory

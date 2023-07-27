@@ -103,7 +103,6 @@ func (o *Gonut) ReadFileInfo() error {
 		return fmt.Errorf("don't recognize file extension: '%s'", ext)
 	}
 
-	// TODO 迁移出去
 	bs, err := os.ReadFile(o.Config.Input)
 	if err != nil {
 		o.DPRINT("Unable to open %s for reading.", o.Config.Input)
@@ -898,6 +897,68 @@ func (o *Gonut) DSave(name string, data []byte) {
 
 func (o *Gonut) Save(templateFn func() []byte) error {
 	return os.WriteFile(o.Config.Output, templateFn(), 0666)
+}
+
+func (o *Gonut) ShowResults() {
+
+	fmt.Println("[Config]")
+	fmt.Println("    Compression   :", o.Config.GonutCompress.Name())
+	fmt.Println("    Input         :", o.Config.Input)
+	fmt.Println("    Target CPU    :", o.Config.Arch.Name())
+
+	fmt.Println("[Module]")
+	fmt.Println("    Type                 :", o.Module.Type.Name())
+	fmt.Println("    Architecture         :", o.FileInfo.Arch.Name())
+	fmt.Println("    Compression          :", o.Module.Compress.Name())
+	fmt.Println("    Length(uncompressed) :", o.Module.Len)
+	fmt.Println("    Length(compressed)   :", o.Module.ZLen)
+	fmt.Println("    Thread               :", o.Config.Thread.Name())
+	fmt.Println("    Unicode              :", o.Config.Unicode.Name())
+	if o.Module.Args[0] != 0x00 {
+		fmt.Println("    Arguments            :", string(o.Module.Args[:]))
+	}
+
+	if o.Config.ModuleType == DONUT_MODULE_NET_DLL {
+		fmt.Println("    .NET Runtime         :", string(o.Module.Runtime[:]))
+		fmt.Println("    Class                :", string(o.Module.Cls[:]))
+		fmt.Println("    Method               :", string(o.Module.Method[:]))
+		domain := "Default"
+		if o.Module.Domain[0] != 0 {
+			domain = string(o.Module.Domain[:])
+		}
+		fmt.Println("    Domain               :", domain)
+	}
+
+	if o.Config.ModuleType == DONUT_MODULE_DLL {
+		method := "DllMain"
+		if o.Module.Method[0] != 0 {
+			method = string(o.Module.Method[:])
+		}
+		fmt.Println("    Function             :", method)
+	}
+
+	fmt.Println("[Instance]")
+	fmt.Println("    Type       :", o.Instance.Type.Name())
+	fmt.Println("    Length     :", o.Instance.Len)
+	fmt.Println("    Exit       :", o.Instance.ExitOpt.Name())
+	fmt.Println("    Entropy    :", o.Instance.Entropy.Name())
+	fmt.Println("    Bypass     :", o.Instance.Bypass.Name())
+	fmt.Println("    PE Headers :", o.Instance.Headers.Name())
+	if o.Instance.OEP != 0 {
+		fmt.Printf("    OEP        : 0x%016X\n", o.Instance.OEP)
+	}
+	if o.Instance.Decoy[0] != 0x00 {
+		fmt.Println("    Decoy      :", string(o.Instance.Decoy[:]))
+	}
+
+	fmt.Println("[Output]")
+	fmt.Println("    File         :", o.Config.Output)
+	fmt.Println("    Format       :", o.Config.Format.Name())
+	fmt.Println("    Length       :", len(o.PicData))
+	if o.Config.InstanceType == DONUT_INSTANCE_HTTP {
+		fmt.Println("    ModuleName   :", o.Config.ModuleName)
+		fmt.Println("    Upload to    :", o.Config.Server)
+	}
 }
 
 func New(c *Config) *Gonut {

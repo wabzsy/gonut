@@ -39,9 +39,9 @@ const (
 // donut/include/donut.h
 // typedef struct _DONUT_MODULE { ... }
 type DonutModule struct {
-	Type     ModuleType      // EXE/DLL/JS/VBS
-	Thread   uint32          // run entrypoint of unmanaged EXE as a thread
-	Compress CompressionType // indicates engine used for compression
+	Type     ModuleType           // EXE/DLL/JS/VBS
+	Thread   uint32               // run entrypoint of unmanaged EXE as a thread
+	Compress DonutCompressionType // indicates engine used for compression
 
 	Runtime [DONUT_MAX_NAME]byte // runtime version for .NET EXE/DLL
 	Domain  [DONUT_MAX_NAME]byte // domain name to use for .NET EXE/DLL

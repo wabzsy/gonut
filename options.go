@@ -77,11 +77,11 @@ func (x CompressionType) Name() string {
 	case GONUT_COMPRESS_LZNT1_RTL:
 		return "LZNT1 (RtlCompressBuffer)"
 	case GONUT_COMPRESS_XPRESS_RTL:
-		return "XPRESS (RtlCompressBuffer)"
+		return "Xpress (RtlCompressBuffer)"
 	case GONUT_COMPRESS_LZNT1:
 		return "LZNT1 (experimental)"
 	case GONUT_COMPRESS_XPRESS:
-		return "XPRESS (experimental)"
+		return "Xpress (experimental)"
 	default:
 		return "Unknown"
 	}
@@ -97,12 +97,30 @@ const (
 	GONUT_COMPRESS_XPRESS     CompressionType = 6
 )
 
+// DonutCompressionType compression engine
+type DonutCompressionType uint32
+
+func (x DonutCompressionType) Name() string {
+	switch x {
+	case DONUT_COMPRESS_NONE:
+		return "None"
+	case DONUT_COMPRESS_APLIB:
+		return "aPLib"
+	case DONUT_COMPRESS_LZNT1:
+		return "LZNT1"
+	case DONUT_COMPRESS_XPRESS:
+		return "Xpress"
+	default:
+		return "Unknown"
+	}
+}
+
 // donut compression engine
 const (
-	DONUT_COMPRESS_NONE   CompressionType = 1
-	DONUT_COMPRESS_APLIB  CompressionType = 2
-	DONUT_COMPRESS_LZNT1  CompressionType = 3 // COMPRESSION_FORMAT_LZNT1
-	DONUT_COMPRESS_XPRESS CompressionType = 4 // COMPRESSION_FORMAT_XPRESS
+	DONUT_COMPRESS_NONE   DonutCompressionType = 1
+	DONUT_COMPRESS_APLIB  DonutCompressionType = 2
+	DONUT_COMPRESS_LZNT1  DonutCompressionType = 3 // COMPRESSION_FORMAT_LZNT1
+	DONUT_COMPRESS_XPRESS DonutCompressionType = 4 // COMPRESSION_FORMAT_XPRESS
 )
 
 // EntropyType entropy level

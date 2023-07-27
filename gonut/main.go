@@ -12,7 +12,12 @@ func main() {
 	cmd := NewCommand(c)
 
 	cmd.RunE = func(*cobra.Command, []string) error {
-		return gonut.New(c).Create()
+		o := gonut.New(c)
+		if err := o.Create(); err != nil {
+			return err
+		}
+		o.ShowResults()
+		return nil
 	}
 
 	if err := cmd.Execute(); err != nil {
@@ -98,10 +103,10 @@ func NewCommand(c *gonut.Config) *cobra.Command {
 		`Pack/Compress file:
 	1=None
 	2=aPLib         [experimental]
-	3=LZNT1(RTL)    [experimental, Windows only]
-	4=XPRESS(RTL)   [experimental, Windows only]
+	3=LZNT1  (RTL)  [experimental, Windows only]
+	4=Xpress (RTL)  [experimental, Windows only]
 	5=LZNT1         [experimental]
-	6=XPRESS        [experimental, recommended]
+	6=Xpress        [experimental, recommended]
 `)
 	cmd.Flags().Uint32VarP((*uint32)(&c.Bypass), "bypass", "b", uint32(gonut.DONUT_BYPASS_CONTINUE),
 		`Bypass AMSI/WLDP/ETW:
