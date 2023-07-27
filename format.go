@@ -25,7 +25,19 @@ func (f *FormatTemplate) ToHex() []byte {
 
 func (f *FormatTemplate) ToRubyC() []byte {
 	buffer := bytes.NewBufferString("unsigned char buf[] = \n")
-	// TODO
+
+	for i := 0; i < len(f.Data); i++ {
+		if i%16 == 0 {
+			buffer.WriteByte('"')
+		}
+		buffer.WriteString(fmt.Sprintf("\\x%02x", f.Data[i]))
+		if i%16 == 15 && i+1 < len(f.Data) {
+			buffer.WriteString("\"\n")
+		}
+	}
+
+	buffer.WriteString("\";\n")
+
 	return buffer.Bytes()
 }
 
