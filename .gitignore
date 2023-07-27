@@ -1,6 +1,7 @@
 .DS_Store
 coverage.txt
 _test
+test
 vendor
 .idea
 *.iml
@@ -8,3 +9,5 @@ vendor
 .vscode
 *_bak
 *.bak
+*.exe
+*.bin
