@@ -35,7 +35,7 @@ func NewCommand(c *gonut.Config) *cobra.Command {
   gonut -i loader.dll -c TestClass -m RunProcess -p "calc notepad" -s http://remote_server.com/modules/
   gonut -z2 -k2 -t -i loader.exe -o out.bin
 `,
-		Version:       "v1.0.0-1",
+		Version:       "v1.0.0-2",
 		SilenceErrors: true,
 	}
 
