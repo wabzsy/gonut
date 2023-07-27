@@ -5,12 +5,11 @@ Under development, some features are not available yet.
 Commonly used features are already available.
 
 ```shell
-
 go install -v github.com/wabzsy/gonut/gonut@latest
 
 gonut -h
 
-# OR 
+# OR
 
 git clone https://github.com/wabzsy/gonut
 
