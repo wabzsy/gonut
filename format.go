@@ -65,8 +65,17 @@ func (f *FormatTemplate) ToPowerShell() []byte {
 }
 
 func (f *FormatTemplate) ToCSharp() []byte {
-	buffer := bytes.NewBufferString(fmt.Sprintf("byte[] my_buf = new byte[%d] {\n", len(f.Data)))
-	// TODO
+	buffer := bytes.NewBufferString(fmt.Sprintf("byte[] buf = new byte[%d] {", len(f.Data)))
+	rows := Convert1d2d(f.Data, 12)
+	for _, row := range rows {
+		buffer.WriteString("\n")
+		for _, c := range row {
+			buffer.WriteString(fmt.Sprintf("0x%02x,", c))
+		}
+	}
+
+	buffer.Bytes()[buffer.Len()-1] = '}'
+	buffer.WriteString(";\n")
 	return buffer.Bytes()
 }
 

@@ -17,12 +17,12 @@ func TestFormatTemplate_ToBinary(t *testing.T) {
 }
 
 func TestFormatTemplate_ToCSharp(t *testing.T) {
-
+	tpl := NewFormatTemplate(GenRandomBytes(276))
+	t.Logf("\n%s\n", tpl.ToCSharp())
 }
 
 func TestFormatTemplate_ToHex(t *testing.T) {
-	//tpl := NewFormatTemplate(GenRandomBytes(300))
-	tpl := NewFormatTemplate([]byte{0x00, 0x01, 0x02})
+	tpl := NewFormatTemplate(GenRandomBytes(300))
 	t.Logf("\n%s\n", tpl.ToHex())
 }
 
