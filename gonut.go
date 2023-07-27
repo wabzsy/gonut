@@ -644,7 +644,7 @@ func (o *Gonut) SaveLoader() (err error) {
 		err = o.Save(tpl.ToPython)
 	case DONUT_FORMAT_POWERSHELL:
 		o.DPRINT("Saving loader as Powershell string")
-		err = o.Save(tpl.ToBinary)
+		err = o.Save(tpl.ToPowerShell)
 	case DONUT_FORMAT_CSHARP:
 		o.DPRINT("Saving loader as C# string")
 		err = o.Save(tpl.ToCSharp)
