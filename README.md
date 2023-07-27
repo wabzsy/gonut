@@ -1,8 +1,8 @@
 # Gonut
 
-Under development, some features are not available yet.
+Under development, 
 
-Commonly used features are already available.
+Most features are already available except output format.
 
 ```shell
 go install -v github.com/wabzsy/gonut/gonut@latest
