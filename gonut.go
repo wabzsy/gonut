@@ -657,6 +657,9 @@ func (o *Gonut) SaveLoader() (err error) {
 	case DONUT_FORMAT_GO:
 		o.DPRINT("Saving loader as Golang string")
 		err = o.Save(tpl.ToGolang)
+	case DONUT_FORMAT_RUST:
+		o.DPRINT("Saving loader as Rust string")
+		err = o.Save(tpl.ToRust)
 	}
 
 	o.DPRINT("Leaving with error: %+v", err)
@@ -776,8 +779,9 @@ func (o *Gonut) ValidateLoaderConfig() error {
 		DONUT_FORMAT_POWERSHELL,
 		DONUT_FORMAT_CSHARP,
 		DONUT_FORMAT_HEX,
-		DONUT_FORMAT_UUID,
-		DONUT_FORMAT_GO:
+		DONUT_FORMAT_GO,
+		DONUT_FORMAT_RUST,
+		DONUT_FORMAT_UUID:
 	default:
 		return fmt.Errorf("invalid `format option` specified: %d", o.Config.Format)
 	}
@@ -853,6 +857,8 @@ func (o *Gonut) ValidateLoaderConfig() error {
 			o.Config.Output += ".uuid"
 		case DONUT_FORMAT_GO:
 			o.Config.Output += ".go"
+		case DONUT_FORMAT_RUST:
+			o.Config.Output += ".rs"
 		}
 	}
 

@@ -72,6 +72,7 @@ func NewCommand(c *gonut.Config) *cobra.Command {
 	8=Hex
 	9=UUID
 	10=Golang
+	11=Rust
 `)
 	cmd.Flags().Uint32VarP(&c.OEP, "oep", "y", 0,
 		"Create thread for loader and continue execution at <addr> supplied. (eg. 0x1234)")

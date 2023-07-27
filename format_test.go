@@ -45,6 +45,11 @@ func TestFormatTemplate_ToGolang(t *testing.T) {
 	t.Logf("\n%s\n", tpl.ToGolang())
 }
 
+func TestFormatTemplate_ToRust(t *testing.T) {
+	tpl := NewFormatTemplate(GenRandomBytes(277))
+	t.Logf("\n%s\n", tpl.ToRust())
+}
+
 func TestFormatTemplate_ToUUID(t *testing.T) {
 	tpl := NewFormatTemplate(GenRandomBytes(277))
 	t.Logf("\n%s\n", tpl.ToUUID())

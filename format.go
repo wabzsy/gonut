@@ -93,6 +93,20 @@ func (f *FormatTemplate) ToGolang() []byte {
 	return buffer.Bytes()
 }
 
+func (f *FormatTemplate) ToRust() []byte {
+	buffer := bytes.NewBufferString(fmt.Sprintf("let buf: [u8; %d] = [", len(f.Data)))
+	rows := Convert1d2d(f.Data, 12)
+	for _, row := range rows {
+		buffer.WriteString("\n")
+		for _, c := range row {
+			buffer.WriteString(fmt.Sprintf("0x%02x,", c))
+		}
+	}
+
+	buffer.WriteString("\n];\n")
+	return buffer.Bytes()
+}
+
 func (f *FormatTemplate) ToUUID() []byte {
 	buffer := bytes.NewBufferString("")
 	rows := Convert1d2d(f.Data, 16)

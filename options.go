@@ -50,6 +50,8 @@ func (x FormatType) Name() string {
 		return "UUID"
 	case DONUT_FORMAT_GO:
 		return "Golang"
+	case DONUT_FORMAT_RUST:
+		return "Rust"
 	default:
 		return "Unknown"
 	}
@@ -66,6 +68,7 @@ const (
 	DONUT_FORMAT_HEX        FormatType = 8
 	DONUT_FORMAT_UUID       FormatType = 9
 	DONUT_FORMAT_GO         FormatType = 10
+	DONUT_FORMAT_RUST       FormatType = 11
 )
 
 // CompressionType compression engine (Gonut)
