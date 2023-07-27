@@ -6,7 +6,11 @@
         现改为在Config.Args前部添加生成的args0和空格 然后再copy
 
 压缩功能也有问题 压缩完就崩了 目前看应该不是压缩算法的问题 所有压缩都不可用 - 已解决
-    原因: 压缩后只Module设置了ZLen忘记设置Len了
+    原因: 压缩后Module只设置了ZLen忘记设置Len了
+
+生成HTTP实例时会报错 -- 已解决
+    原因: 判断o.Config.ModuleName时==写成!=了
+
 
 {
 	// 临时设置固定 Instance.Key

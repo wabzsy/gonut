@@ -447,7 +447,7 @@ func (o *Gonut) BuildInstance() error {
 	// set the URL parameter and request verb
 	if o.Instance.Type == DONUT_INSTANCE_HTTP {
 		// if no module name specified
-		if o.Config.ModuleName != "" {
+		if o.Config.ModuleName == "" {
 			// if entropy disabled
 			if o.Config.Entropy == DONUT_ENTROPY_NONE {
 				// set to "AAAAAAAA"
