@@ -945,7 +945,7 @@ func (o *Gonut) ShowResults() {
 	fmt.Println("    Bypass     :", o.Instance.Bypass.Name())
 	fmt.Println("    PE Headers :", o.Instance.Headers.Name())
 	if o.Instance.OEP != 0 {
-		fmt.Printf("    OEP        : 0x%016X\n", o.Instance.OEP)
+		fmt.Printf("    OEP        : 0x%08X\n", o.Instance.OEP)
 	}
 	if o.Instance.Decoy[0] != 0x00 {
 		fmt.Println("    Decoy      :", string(o.Instance.Decoy[:]))
