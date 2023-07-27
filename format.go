@@ -41,7 +41,7 @@ func (f *FormatTemplate) ToRubyC() []byte {
 
 func (f *FormatTemplate) ToPython() []byte {
 	buffer := bytes.NewBufferString("buf =  b\"\"")
-	rows := Convert1d2d(f.Data, 16)
+	rows := Convert1d2d(f.Data, 12)
 	for _, row := range rows {
 		buffer.WriteString("\nbuf += b\"")
 		for _, c := range row {
