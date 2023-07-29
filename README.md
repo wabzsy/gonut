@@ -109,7 +109,7 @@ go build -v
 
 ### Usage
 
-The [usage of **D**onut](https://github.com/TheWover/donut#4-usage) is roughly the same. The following table lists switches supported by the command line version of the **G**onut:
+Much the same as [**D**onut's usage](https://github.com/TheWover/donut#4-usage). The following table lists switches supported by the command line version of the **G**onut:
 
 | Switch         | Argument type | Description                                                  |
 | -------------- | ------------- | ------------------------------------------------------------ |
