@@ -97,7 +97,15 @@ Loader相当于一个Shellcode模板，在内存中执行时会根据Generator�
 
 ### 通过 Docker 构建
 
-TODO
+```bash
+git clone https://github.com/wabzsy/gonut
+
+cd gonut
+
+docker build -t gonut . -f Dockerfile-cn
+
+# docker run --rm -it -v `pwd`:/opt gonut -h
+```
 
 ### 通过 go install 安装
 

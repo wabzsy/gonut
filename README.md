@@ -89,7 +89,15 @@ For various reasons, Gonut currently does **not intend** to provide precompiled 
 
 ### Building via Docker
 
-TODO
+```bash
+git clone https://github.com/wabzsy/gonut
+
+cd gonut
+
+docker build -t gonut .
+
+# docker run --rm -it -v `pwd`:/opt gonut -h
+```
 
 ### Installation via go install
 
