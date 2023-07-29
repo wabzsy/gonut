@@ -1,12 +1,14 @@
 # Gonut
 
+[English](README.md) | 中文
+
 在初次使用**G**onut之前，您需要先了解：“**D**onut是什么？”。
 
 ## Donut 是什么？
 
 ### 1. Donut 简介
 
->  Donut 是一种与位置无关的代码，可以在内存中执行 VBScript、JScript、EXE、DLL 文件和 .NET 程序集。
+>  **Donut** 是一种与位置无关的代码，可以在内存中执行 VBScript、JScript、EXE、DLL 文件和 .NET 程序集。
 >
 >  Donut 创建的模块可以从 HTTP 服务器暂存，也可以直接嵌入到加载器本身中。
 >
