@@ -53,7 +53,7 @@ Note again: **G**onut is just a cross-platform implementation of **D**onut's **G
 
 - **D**onut's Generator can only run on Windows and Linux systems.
 - The behavior of **D**onut's Generator under Linux is not completely consistent with that under Windows. ([#45](https://github.com/TheWover/donut/issues/45))
-- **D**onut's Generator does not support compression under Linux.
+- **D**onut's Generator does not support Xpress, LZNT1 compression under Linux.
 - Currently, it is impossible to compile **D**onut under Arm architecture on Windows and Linux.
 - **D**onut's Generator cannot be used under macOS (M-series chips).
 - Let more people know about **D**onut, a seriously underrated project.

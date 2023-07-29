@@ -61,7 +61,7 @@ Loader相当于一个Shellcode模板，在内存中执行时会根据Generator�
 
 - **D**onut的Generator仅可运行在Windows与Linux系统下。
 - **D**onut的Generator在Linux系统下的行为与在Windows系统下的行为不完全一致（[#45](https://github.com/TheWover/donut/issues/45)）。
-- **D**onut的Generator在Linux系统下不支持压缩功能。
+- **D**onut的Generator在Linux系统下不支持LZNT1、Xpress的压缩功能。
 - 目前无法在在Arm架构的Windows、Linux下编译**D**onut。
 - **D**onut的Generator在macOS（M系列芯片）下无法使用。
 - 让更多人了解到**D**onut这个被严重低估的项目。
